@@ -19,24 +19,6 @@ Click here to try the app: \[https\://your-streamlit-link] *(replace with actual
 * Streamlit
 * Machine Learning (RandomForestClassifier)
 
-## 📂 Project Structure
-
-app/streamlit\_app.py
-model/outbreak\_model.pkl
-requirements.txt
-README.md
-
-## ⚙️ How to Run Locally
-
-1. Clone the repo:
-   git clone (https://github.com/my-projects-it/disease-outbreak-predictor)
-2. Navigate into the project:
-   cd disease-outbreak-predictor
-3. Install dependencies:
-   pip install -r requirements.txt
-4. Run the app:
-   streamlit run app/streamlit\_app.py
-
 ## 👤 Author
 
 Barkha Jain

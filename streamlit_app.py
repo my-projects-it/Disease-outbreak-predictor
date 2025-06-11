@@ -5,7 +5,7 @@ import joblib
 st.set_page_config(page_title="Disease Outbreak Predictor")
 st.title("🦠 Disease Outbreak Predictor")
 
-model = joblib.load('model/outbreak_model.pkl')
+model = joblib.load('outbreak_model.pkl')
 
 temp = st.slider("🌡️ Temperature (°C)", 20, 45, 30)
 humidity = st.slider("💧 Humidity (%)", 30, 100, 70)

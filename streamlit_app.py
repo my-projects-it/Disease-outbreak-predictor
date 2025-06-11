@@ -1,33 +1,55 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 
-st.set_page_config(page_title="Disease Outbreak Predictor")
-st.title("🦠 Disease Outbreak Predictor")
+# 📦 Model file path
+model_path = "outbreak_model.pkl"
 
-model = joblib.load('model/outbreak_model.pkl')
+# 🤖 Train the model automatically if not found
+if not os.path.exists(model_path):
+    st.info("🔄 Training model for the first time...")
 
-temp = st.slider("🌡️ Temperature (°C)", 20, 45, 30)
-humidity = st.slider("💧 Humidity (%)", 30, 100, 70)
-prev_cases = st.number_input("📊 Previous Week Cases", 0, 100, 5)
-region = st.selectbox("📍 Region", ["north", "south", "east", "west"])
+    # 📊 Dummy data (replace with real data for actual use)
+    data = {
+        "temperature": [98.6, 99.1, 101.2, 97.0, 100.4],
+        "humidity": [70, 80, 60, 90, 75],
+        "population_density": [1000, 2000, 1500, 1800, 2200],
+        "outbreak": [0, 1, 1, 0, 1]
+    }
 
-input_data = {
-    'temperature': temp,
-    'humidity': humidity,
-    'previous_cases': prev_cases,
-    'region_east': 0,
-    'region_north': 0,
-    'region_south': 0,
-    'region_west': 0
-}
-input_data[f'region_{region}'] = 1
+    df = pd.DataFrame(data)
 
-df_input = pd.DataFrame([input_data])
+    # 🧠 Training
+    X = df.drop("outbreak", axis=1)
+    y = df["outbreak"]
 
-if st.button("🔍 Predict Outbreak"):
-    result = model.predict(df_input)[0]
+    model = RandomForestClassifier()
+    model.fit(X, y)
+
+    # 💾 Save model
+    joblib.dump(model, model_path)
+    st.success("✅ Model trained and saved!")
+
+else:
+    # 🔓 Load model
+    model = joblib.load(model_path)
+
+# 💡 Prediction UI
+st.title("🦠 Disease Outbreak Prediction")
+
+temp = st.number_input("🌡️ Temperature (F)", value=98.6)
+humid = st.number_input("💧 Humidity (%)", value=70)
+pop_density = st.number_input("👥 Population Density", value=1500)
+
+if st.button("🔍 Predict"):
+    input_data = pd.DataFrame([[temp, humid, pop_density]],
+                              columns=["temperature", "humidity", "population_density"])
+    result = model.predict(input_data)[0]
+
     if result == 1:
-        st.error("⚠️ Warning: Outbreak Likely!")
+        st.error("🚨 High Risk of Outbreak Detected!")
     else:
-        st.success("✅ No Outbreak Expected.")
+        st.success("🛡️ Low Risk of Outbreak")

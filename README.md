@@ -11,7 +11,7 @@ A simple machine learning web app that predicts the risk of a disease outbreak u
 
 ## 🚀 Live Demo
 
-Click here to try the app: \[https\://your-streamlit-link] *(replace with actual URL)*
+Click here to try the app: https://ai-disease-outbreak-predictor.streamlit.app/
 
 ## 🛠️ Tech Stack
 
